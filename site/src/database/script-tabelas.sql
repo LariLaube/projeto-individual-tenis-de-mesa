@@ -5,55 +5,54 @@
 /*
 comandos para mysql - banco local - ambiente de desenvolvimento
 */
-
-CREATE DATABASE aquatech;
-
-USE aquatech;
-
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14)
-);
+CREATE DATABASE tennis_table;
+use tennis_table;
 
 CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50),
+    email VARCHAR(50),
+    senha VARCHAR(50)
 );
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+CREATE TABLE dicas (
+    idDicas INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(100),
+    descricao VARCHAR(150),
+    ativos char(3)
 );
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE video (
+    idVideo INT PRIMARY KEY AUTO_INCREMENT,
+    descricao VARCHAR(300),
+    texto varchar(300),
+    ativo char(3),
+    videoUrl varchar(300)
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	dht11_umidade DECIMAL,
-	dht11_temperatura DECIMAL,
-	luminosidade DECIMAL,
-	lm35_temperatura DECIMAL,
-	chave TINYINT,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
+CREATE TABLE pergunta (
+    idPergunta INT PRIMARY KEY AUTO_INCREMENT,
+    pergunta varchar(150),
+    ativa char(3)
 );
+
+CREATE TABLE resposta (
+    idResposta INT PRIMARY KEY AUTO_INCREMENT,
+    resposta varchar(150),
+    ativa char(3),
+    respostacerta char(3),
+    idPergunta INT,
+    FOREIGN KEY (idPergunta) REFERENCES pergunta(idPergunta)
+);
+
+CREATE TABLE pontuacao (
+    idPontuacao INT PRIMARY KEY AUTO_INCREMENT,
+    idUsuario int,
+    FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario)
+);
+
+
+
 
 insert into empresa (razao_social, cnpj) values ('Empresa 1', '00000000000000');
 insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
